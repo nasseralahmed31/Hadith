@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>أحاديث</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f1e7;--card:#fff;--tx:#2b2b2b;--mu:#7a7468;--ac:#1f6f5c;--bd:#e6dfd0}
+[data-t=d]{--bg:#12181b;--card:#1b2428;--tx:#ece8df;--mu:#9aa3a6;--ac:#4fc3a1;--bd:#2a353a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:Cairo,sans-serif;padding-bottom:76px}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;position:sticky;top:0;background:var(--bg);z-index:5}
+h1{margin:0;font-size:20px;color:var(--ac)}button{font-family:inherit;cursor:pointer}
+.ic{background:none;border:0;font-size:22px}
+main{padding:0 14px;max-width:640px;margin:auto}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin:12px 0;border-inline-start:4px solid var(--ac)}
+.tx{font-size:20px;line-height:2;margin:0 0 10px}
+.mt{color:var(--mu);font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tag{background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:2px 10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:9px 16px;font-size:15px}
+.btn.o{background:none;color:var(--ac);border:1px solid var(--ac)}
+input,textarea{width:100%;padding:11px;margin:5px 0;border:1px solid var(--bd);border-radius:12px;background:var(--card);color:var(--tx);font-family:inherit;font-size:16px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:4px 0}
+.chip{white-space:nowrap;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:5px 12px}
+.chip.on{background:var(--ac);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.stats div{background:var(--card);border:1px solid var(--bd);border-radius:14px;text-align:center;padding:10px;font-size:13px}
+.stats b{display:block;font-size:22px;color:var(--ac)}
+nav{position:fixed;bottom:0;inset-inline:0;display:flex;background:var(--card);border-top:1px solid var(--bd)}
+nav button{flex:1;padding:10px 0;background:none;border:0;color:var(--mu);font-size:12px}
+nav button.on{color:var(--ac);font-weight:700}
+</style></head>
+<body><header><h1>📖 أحاديث</h1><button class="ic" id="th">🌙</button></header>
+<main id="m"></main><nav id="nv"></nav>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import{initializeFirestore,persistentLocalCache,collection,onSnapshot,query,orderBy,addDoc,deleteDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+const app=initializeApp({apiKey:"AIzaSyDRC6-c1c7r3lbwgHzdtYGvxlQivcyQPeg",authDomain:"hadith-app-94b7d.firebaseapp.com",projectId:"hadith-app-94b7d",storageBucket:"hadith-app-94b7d.firebasestorage.app",messagingSenderId:"604213128625",appId:"1:604213128625:web:cba119d31a2b9e14982190"});
+const db=initializeFirestore(app,{localCache:persistentLocalCache()}),au=getAuth(app);
+const $=s=>document.querySelector(s),E=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let H=[],U=null,tab='home',src='',q='',rnd=null,fav=JSON.parse(localStorage.fav||'[]');
+const T=[['home','🏠','الرئيسية'],['list','📚','الأحاديث'],['fav','❤️','المفضلة'],['adm','⚙️','المشرف']];
+const uniq=k=>[...new Set(H.map(h=>h[k]).filter(Boolean))];
+const empty='<p style="text-align:center;color:var(--mu)">لا توجد أحاديث بعد</p>';
+const day=()=>{let n=0;for(const c of new Date().toLocaleDateString('en-CA'))n=(n*31+c.charCodeAt(0))%100003;return H[n%H.length]};
+const card=h=>`<div class="card"><p class="tx">${E(h.text)}</p><div class="mt"><span>الراوي: ${E(h.narrator)}</span><span class="tag">${E(h.source)}</span>${h.grade?`<span class="tag">${E(h.grade)}</span>`:''}${h.topic?`<span class="tag">${E(h.topic)}</span>`:''}</div><div class="row"><button class="btn o" data-a="f" data-i="${h.id}">${fav.includes(h.id)?'❤️':'🤍'}</button><button class="btn o" data-a="c" data-i="${h.id}">نسخ</button>${U?`<button class="btn o" data-a="d" data-i="${h.id}">حذف</button>`:''}</div></div>`;
+const res=()=>{const k=q.trim(),L=H.filter(h=>(!src||h.source==src)&&(!k||[h.text,h.narrator,h.source,h.topic].join(' ').includes(k)));$('#res').innerHTML=L.length?L.map(card).join(''):empty};
+function view(){
+$('#nv').innerHTML=T.map(([k,i,l])=>`<button class="${tab==k?'on':''}" data-k="${k}">${i}<br>${l}</button>`).join('');
+const m=$('#m');
+if(tab=='home')m.innerHTML=`<div class="stats"><div><b>${H.length}</b>حديث</div><div><b>${uniq('source').length}</b>مصدر</div><div><b>${uniq('narrator').length}</b>راوٍ</div></div><h3>حديث اليوم</h3>${H.length?card(day()):empty}<div class="row"><button class="btn" data-a="r">🎲 حديث عشوائي</button></div>${rnd?card(rnd):''}`;
+else if(tab=='list'){m.innerHTML=`<input id="q" placeholder="ابحث في النص أو الراوي أو المصدر..." value="${E(q)}"><div class="chips"><button class="chip ${src?'':'on'}" data-a="s" data-s="">الكل</button>${uniq('source').map(s=>`<button class="chip ${src==s?'on':''}" data-a="s" data-s="${E(s)}">${E(s)} (${H.filter(h=>h.source==s).length})</button>`).join('')}</div><div id="res"></div>`;res()}
+else if(tab=='fav')m.innerHTML=H.filter(h=>fav.includes(h.id)).map(card).join('')||'<p style="text-align:center;color:var(--mu)">لا مفضلة بعد</p>';
+else m.innerHTML=U?`<div class="card"><h3>إضافة حديث</h3><textarea id="t" rows="5" placeholder="الحديث / الراوي / المصدر"></textarea><input id="g" placeholder="درجة الحديث (اختياري)"><input id="p" placeholder="الموضوع (اختياري)"><div class="row"><button class="btn" data-a="add">إضافة</button><button class="btn o" data-a="out">خروج</button></div></div>`:`<div class="card"><h3>دخول المشرف</h3><input id="em" type="email" placeholder="البريد"><input id="pw" type="password" placeholder="كلمة المرور"><button class="btn" data-a="in">دخول</button></div>`}
+$('#nv').onclick=e=>{const b=e.target.closest('[data-k]');if(b){tab=b.dataset.k;view()}};
+$('#m').oninput=e=>{if(e.target.id=='q'){q=e.target.value;res()}};
+$('#m').onclick=async e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,i=b.dataset.i,h=H.find(x=>x.id==i);
+if(a=='f'){fav=fav.includes(i)?fav.filter(x=>x!=i):[...fav,i];localStorage.fav=JSON.stringify(fav);view()}
+else if(a=='c'){navigator.clipboard.writeText(`${h.text}\n— ${h.narrator} (${h.source})`);b.textContent='تم ✓'}
+else if(a=='r'&&H.length){rnd=H[Math.floor(Math.random()*H.length)];view()}
+else if(a=='s'){src=b.dataset.s;view()}
+else if(a=='d'){if(confirm('حذف هذا الحديث لجميع المستخدمين؟'))deleteDoc(doc(db,'hadiths',i))}
+else if(a=='in')signInWithEmailAndPassword(au,$('#em').value,$('#pw').value).catch(()=>alert('بيانات الدخول غير صحيحة'));
+else if(a=='out')signOut(au);
+else if(a=='add'){const p=$('#t').value.split('/').map(x=>x.trim()),source=p.pop(),narrator=p.pop(),text=p.join(' / ');
+if(!text||!narrator||!source)return alert('اكتب: الحديث / الراوي / المصدر');
+try{await addDoc(collection(db,'hadiths'),{text,narrator,source,grade:$('#g').value.trim(),topic:$('#p').value.trim(),createdAt:serverTimestamp()});view();alert('تمت الإضافة ✓')}catch{alert('تعذّرت الإضافة')}}};
+$('#th').onclick=()=>{const d=document.documentElement.dataset.t=='d'?'':'d';document.documentElement.dataset.t=d;localStorage.theme=d};
+document.documentElement.dataset.t=localStorage.theme||'';
+onAuthStateChanged(au,u=>{U=u;view()});
+onSnapshot(query(collection(db,'hadiths'),orderBy('createdAt','desc')),s=>{H=s.docs.map(d=>({id:d.id,...d.data()}));if(tab!='adm')view()});
+view();
+</script></body></html>
