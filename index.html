@@ -7,8 +7,8 @@
 [data-t=d]{--bg:#12181b;--card:#1b2428;--tx:#ece8df;--mu:#9aa3a6;--ac:#4fc3a1;--bd:#2a353a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:Cairo,sans-serif;padding-bottom:76px}
 header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;position:sticky;top:0;background:var(--bg);z-index:5}
-h1{margin:0;font-size:20px;color:var(--ac)}button{font-family:inherit;cursor:pointer}
-.ic{background:none;border:0;font-size:22px}
+h1{margin:0;font-size:20px;color:var(--ac)}h3{margin:12px 0 4px}button{font-family:inherit;cursor:pointer}
+.ic{background:none;border:0;font-size:22px;color:var(--tx)}
 main{padding:0 14px;max-width:640px;margin:auto}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;margin:12px 0;border-inline-start:4px solid var(--ac)}
 .tx{font-size:20px;line-height:2;margin:0 0 10px}
@@ -17,19 +17,31 @@ main{padding:0 14px;max-width:640px;margin:auto}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .btn{background:var(--ac);color:#fff;border:0;border-radius:12px;padding:9px 16px;font-size:15px}
 .btn.o{background:none;color:var(--ac);border:1px solid var(--ac)}
+.btn.s{padding:6px 12px;font-size:13px}
 input,textarea{width:100%;padding:11px;margin:5px 0;border:1px solid var(--bd);border-radius:12px;background:var(--card);color:var(--tx);font-family:inherit;font-size:16px}
 .chips{display:flex;gap:6px;overflow-x:auto;padding:4px 0}
-.chip{white-space:nowrap;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:5px 12px}
+.chip{white-space:nowrap;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:20px;padding:5px 12px;font-family:inherit}
 .chip.on{background:var(--ac);color:#fff}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
 .stats div{background:var(--card);border:1px solid var(--bd);border-radius:14px;text-align:center;padding:10px;font-size:13px}
 .stats b{display:block;font-size:22px;color:var(--ac)}
-nav{position:fixed;bottom:0;inset-inline:0;display:flex;background:var(--card);border-top:1px solid var(--bd)}
-nav button{flex:1;padding:10px 0;background:none;border:0;color:var(--mu);font-size:12px}
+.bars{display:flex;gap:6px;align-items:flex-end;justify-content:space-around;height:130px}
+.bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;font-size:12px;color:var(--mu)}
+.bar i{width:22px;background:var(--ac);border-radius:6px;min-height:3px;display:block}
+nav{position:fixed;bottom:0;inset-inline:0;display:flex;background:var(--card);border-top:1px solid var(--bd);z-index:6}
+nav button{flex:1;padding:10px 0;background:none;border:0;color:var(--mu);font-size:11px}
 nav button.on{color:var(--ac);font-weight:700}
+#rd{display:none;position:fixed;inset:0;background:var(--bg);z-index:20;overflow:auto}
+.rin{max-width:700px;margin:auto;padding-top:20px;padding-bottom:190px}
+.rtx{margin:30px 0;text-align:justify}
+.rbar{position:fixed;bottom:0;inset-inline:0;background:var(--card);border-top:1px solid var(--bd);padding:8px;display:flex;flex-direction:column;gap:6px}
+.rbar .row{justify-content:center;margin:0}
+#md{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;align-items:center;justify-content:center;padding:16px}
+.bx{background:var(--card);color:var(--tx);border-radius:18px;padding:18px;width:100%;max-width:420px;max-height:90vh;overflow:auto}
+#ts{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:9px 18px;border-radius:20px;opacity:0;transition:.3s;z-index:40;pointer-events:none}
 </style></head>
 <body><header><h1>📖 أحاديث</h1><button class="ic" id="th">🌙</button></header>
-<main id="m"></main><nav id="nv"></nav>
+<main id="m"></main><nav id="nv"></nav><div id="rd"></div><div id="md"></div><div id="ts"></div>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import{initializeFirestore,persistentLocalCache,collection,onSnapshot,query,orderBy,addDoc,deleteDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
@@ -37,36 +49,97 @@ import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut}from"https:
 const app=initializeApp({apiKey:"AIzaSyDRC6-c1c7r3lbwgHzdtYGvxlQivcyQPeg",authDomain:"hadith-app-94b7d.firebaseapp.com",projectId:"hadith-app-94b7d",storageBucket:"hadith-app-94b7d.firebasestorage.app",messagingSenderId:"604213128625",appId:"1:604213128625:web:cba119d31a2b9e14982190"});
 const db=initializeFirestore(app,{localCache:persistentLocalCache()}),au=getAuth(app);
 const $=s=>document.querySelector(s),E=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let H=[],U=null,tab='home',src='',q='',rnd=null,fav=JSON.parse(localStorage.fav||'[]');
-const T=[['home','🏠','الرئيسية'],['list','📚','الأحاديث'],['fav','❤️','المفضلة'],['adm','⚙️','المشرف']];
+const J=(k,d)=>{try{return JSON.parse(localStorage[k])||d}catch{return d}},S=(k,v)=>localStorage[k]=JSON.stringify(v);
+let H=[],U=null,tab='home',src='',q='',rnd=null,R=null,fsel='',yes=null,CV=null;
+let fav=J('fav',[]),L=J('log',{}),C=J('cols',{}),rs=J('rs',{s:22,l:2.1,m:16});
+const lim={s:[16,44,2],l:[1.5,3.2,.1],m:[0,48,8]};
+const T=[['home','🏠','الرئيسية'],['list','📚','الأحاديث'],['fav','❤️','المحفوظات'],['log','📊','السجل'],['adm','⚙️','المشرف']];
 const uniq=k=>[...new Set(H.map(h=>h[k]).filter(Boolean))];
-const empty='<p style="text-align:center;color:var(--mu)">لا توجد أحاديث بعد</p>';
-const day=()=>{let n=0;for(const c of new Date().toLocaleDateString('en-CA'))n=(n*31+c.charCodeAt(0))%100003;return H[n%H.length]};
-const card=h=>`<div class="card"><p class="tx">${E(h.text)}</p><div class="mt"><span>الراوي: ${E(h.narrator)}</span><span class="tag">${E(h.source)}</span>${h.grade?`<span class="tag">${E(h.grade)}</span>`:''}${h.topic?`<span class="tag">${E(h.topic)}</span>`:''}</div><div class="row"><button class="btn o" data-a="f" data-i="${h.id}">${fav.includes(h.id)?'❤️':'🤍'}</button><button class="btn o" data-a="c" data-i="${h.id}">نسخ</button>${U?`<button class="btn o" data-a="d" data-i="${h.id}">حذف</button>`:''}</div></div>`;
-const res=()=>{const k=q.trim(),L=H.filter(h=>(!src||h.source==src)&&(!k||[h.text,h.narrator,h.source,h.topic].join(' ').includes(k)));$('#res').innerHTML=L.length?L.map(card).join(''):empty};
+const empty='<p style="text-align:center;color:var(--mu)">لا توجد أحاديث</p>';
+const fmt=d=>d.toLocaleDateString('en-CA'),td=()=>fmt(new Date()),cn=d=>(L[fmt(d)]||[]).length;
+const isRead=id=>(L[td()]||[]).includes(id);
+const day=()=>{let n=0;for(const c of td())n=(n*31+c.charCodeAt(0))%100003;return H[n%H.length]};
+function streak(){const d=new Date();let c=0;if(!cn(d))d.setDate(d.getDate()-1);while(cn(d)){c++;d.setDate(d.getDate()-1)}return c}
+function week(){let t=0,a=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const c=cn(d);a.push([d.toLocaleDateString('ar',{weekday:'short'}),c]);t+=c}return[t,a]}
+function markRead(id){if(isRead(id)){toast('مسجّل مسبقًا اليوم');return}(L[td()]=L[td()]||[]).push(id);S('log',L);toast('سُجّلت في قراءة اليوم ✓')}
+function toast(t){const x=$('#ts');x.textContent=t;x.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>x.style.opacity=0,2200)}
+const modal=h=>{$('#md').innerHTML=`<div class="bx">${h}</div>`;$('#md').style.display='flex'},close=()=>{$('#md').style.display='none';$('#md').innerHTML=''};
+const ask=(t,f)=>{yes=f;modal(`<p>${t}</p><div class="row"><button class="btn" data-a="yes">نعم</button><button class="btn o" data-a="x">إلغاء</button></div>`)};
+function colModal(id){const ns=Object.keys(C);modal(`<h3>إضافة إلى مجموعة</h3>${ns.map(n=>{const on=(C[n]||[]).includes(id);return`<button class="chip ${on?'on':''}" style="display:block;width:100%;margin:5px 0;text-align:start" data-a="tc" data-c="${E(n)}" data-i="${id}">${on?'✓ ':''}${E(n)}</button>`}).join('')}<input id="cn" placeholder="مجموعة جديدة..."><div class="row"><button class="btn" data-a="nc" data-i="${id}">إنشاء وإضافة</button><button class="btn o" data-a="x">تم</button></div>`)}
+const card=h=>`<div class="card"><p class="tx">${E(h.text)}</p><div class="mt"><span>الراوي: ${E(h.narrator)}</span><span class="tag">${E(h.source)}</span>${h.grade?`<span class="tag">${E(h.grade)}</span>`:''}${h.topic?`<span class="tag">${E(h.topic)}</span>`:''}</div><div class="row"><button class="btn o" data-a="f" data-i="${h.id}">${fav.includes(h.id)?'❤️':'🤍'}</button><button class="btn o" data-a="rd" data-i="${h.id}">📖 قراءة</button><button class="btn o" data-a="ok" data-i="${h.id}">${isRead(h.id)?'✅':'☑️'} قرأته</button></div><div class="row"><button class="btn o s" data-a="cl" data-i="${h.id}">➕ مجموعة</button><button class="btn o s" data-a="im" data-i="${h.id}">🖼 بطاقة</button><button class="btn o s" data-a="c" data-i="${h.id}">نسخ</button>${U?`<button class="btn o s" data-a="d" data-i="${h.id}">حذف</button>`:''}</div></div>`;
+const res=()=>{const k=q.trim(),Ls=H.filter(h=>(!src||h.source==src)&&(!k||[h.text,h.narrator,h.source,h.topic].join(' ').includes(k)));$('#res').innerHTML=Ls.length?Ls.map(card).join(''):empty};
+function rdr(){const el=$('#rd');if(!R){el.style.display='none';el.innerHTML='';return}
+const h=H.find(x=>x.id==R);if(!h){R=null;return rdr()}
+const i=H.indexOf(h),p=(k,d,l)=>`<button class="btn o s" data-a="rp" data-p="${k}" data-d="${d}">${l}</button>`;
+el.style.display='block';
+el.innerHTML=`<div class="rin" style="padding-inline:${rs.m}px"><div class="mt" style="justify-content:space-between"><button class="ic" data-a="rx">✕</button><span>${i+1} / ${H.length}</span></div><p class="rtx" style="font-size:${rs.s}px;line-height:${rs.l}">${E(h.text)}</p><div class="mt"><span>الراوي: ${E(h.narrator)}</span><span class="tag">${E(h.source)}</span>${h.grade?`<span class="tag">${E(h.grade)}</span>`:''}</div></div><div class="rbar"><div class="row"><button class="btn o s" data-a="rn" data-d="-1">→ السابق</button><button class="btn s" data-a="rk">${isRead(h.id)?'✅':'☑️'} قرأته</button><button class="btn o s" data-a="rn" data-d="1">التالي ←</button></div><div class="row">${p('s',-1,'أ −')}${p('s',1,'أ +')}${p('l',-1,'تباعد −')}${p('l',1,'تباعد +')}${p('m',-1,'هامش −')}${p('m',1,'هامش +')}</div></div>`}
+function rr(x,a,b,w,h,r){x.beginPath();x.roundRect?x.roundRect(a,b,w,h,r):x.rect(a,b,w,h)}
+function wrap(x,t,w){const o=[];let l='';for(const wd of t.replace(/\s+/g,' ').trim().split(' ')){const tt=l?l+' '+wd:wd;if(x.measureText(tt).width>w&&l){o.push(l);l=wd}else l=tt}if(l)o.push(l);return o}
+async function cardImg(h){
+const W=1080,HH=1350,cv=document.createElement('canvas');cv.width=W;cv.height=HH;const x=cv.getContext('2d');
+const dk=document.documentElement.dataset.t=='d',bg=dk?'#12181b':'#f6f1e7',pc=dk?'#1b2428':'#ffffff',tx=dk?'#ece8df':'#2b2b2b',ac=dk?'#4fc3a1':'#1f6f5c',mu=dk?'#9aa3a6':'#7a7468';
+try{await document.fonts.load('700 40px Cairo');await document.fonts.load('600 40px Cairo')}catch{}
+x.fillStyle=bg;x.fillRect(0,0,W,HH);x.fillStyle=pc;rr(x,60,60,W-120,HH-120,40);x.fill();x.strokeStyle=ac;x.lineWidth=6;rr(x,60,60,W-120,HH-120,40);x.stroke();
+x.direction='rtl';x.textAlign='right';
+const wd=W-220,top=200,bot=HH-340;let sz=60,ln=[];
+for(;sz>=26;sz-=2){x.font=`600 ${sz}px Cairo,sans-serif`;ln=wrap(x,h.text,wd);if(ln.length*sz*1.85<=bot-top)break}
+x.fillStyle=ac;x.font='700 40px Cairo,sans-serif';x.fillText('حديث شريف',W-110,165);
+x.fillStyle=tx;x.font=`600 ${sz}px Cairo,sans-serif`;ln.forEach((l,i)=>x.fillText(l,W-110,top+sz*1.4+i*sz*1.85));
+x.fillStyle=ac;x.fillRect(110,HH-300,W-220,3);
+x.font='600 38px Cairo,sans-serif';x.fillStyle=mu;x.fillText('الراوي: '+h.narrator,W-110,HH-235);
+x.fillStyle=ac;x.fillText('المصدر: '+h.source,W-110,HH-175);
+if(h.grade){x.fillStyle=mu;x.fillText('الدرجة: '+h.grade,W-110,HH-115)}
+CV=cv;modal(`<h3>بطاقة الحديث</h3><img src="${cv.toDataURL('image/png')}" style="width:100%;border-radius:12px"><div class="row"><button class="btn" data-a="sh">مشاركة / حفظ</button><button class="btn o" data-a="x">إغلاق</button></div>`)}
 function view(){
-$('#nv').innerHTML=T.map(([k,i,l])=>`<button class="${tab==k?'on':''}" data-k="${k}">${i}<br>${l}</button>`).join('');
+$('#nv').innerHTML=T.map(([k,i,l])=>`<button class="${tab==k?'on':''}" data-nav="${k}">${i}<br>${l}</button>`).join('');
 const m=$('#m');
-if(tab=='home')m.innerHTML=`<div class="stats"><div><b>${H.length}</b>حديث</div><div><b>${uniq('source').length}</b>مصدر</div><div><b>${uniq('narrator').length}</b>راوٍ</div></div><h3>حديث اليوم</h3>${H.length?card(day()):empty}<div class="row"><button class="btn" data-a="r">🎲 حديث عشوائي</button></div>${rnd?card(rnd):''}`;
+if(tab=='home')m.innerHTML=`<div class="stats"><div><b>${H.length}</b>حديث</div><div><b>${uniq('source').length}</b>مصدر</div><div><b>${uniq('narrator').length}</b>راوٍ</div></div><p class="mt">🔥 سلسلة القراءة: ${streak()} يوم</p><h3>حديث اليوم</h3>${H.length?card(day()):empty}<div class="row"><button class="btn" data-a="r">🎲 حديث عشوائي</button></div>${rnd&&H.find(x=>x.id==rnd.id)?card(rnd):''}`;
 else if(tab=='list'){m.innerHTML=`<input id="q" placeholder="ابحث في النص أو الراوي أو المصدر..." value="${E(q)}"><div class="chips"><button class="chip ${src?'':'on'}" data-a="s" data-s="">الكل</button>${uniq('source').map(s=>`<button class="chip ${src==s?'on':''}" data-a="s" data-s="${E(s)}">${E(s)} (${H.filter(h=>h.source==s).length})</button>`).join('')}</div><div id="res"></div>`;res()}
-else if(tab=='fav')m.innerHTML=H.filter(h=>fav.includes(h.id)).map(card).join('')||'<p style="text-align:center;color:var(--mu)">لا مفضلة بعد</p>';
+else if(tab=='fav'){if(fsel&&!C[fsel])fsel='';const ids=fsel?C[fsel]:fav,L2=H.filter(h=>ids.includes(h.id));
+m.innerHTML=`<div class="chips"><button class="chip ${fsel?'':'on'}" data-a="fs" data-s="">❤️ المفضلة (${fav.length})</button>${Object.keys(C).map(n=>`<button class="chip ${fsel==n?'on':''}" data-a="fs" data-s="${E(n)}">${E(n)} (${C[n].length})</button>`).join('')}<button class="chip" data-a="nc0">＋ مجموعة</button></div>${fsel?`<div class="row"><button class="btn o s" data-a="dc">حذف هذه المجموعة</button></div>`:''}${L2.map(card).join('')||'<p style="text-align:center;color:var(--mu)">لا شيء هنا بعد</p>'}`}
+else if(tab=='log'){const[w,wa]=week(),mx=Math.max(1,...wa.map(x=>x[1])),pre=td().slice(0,7);
+const mo=Object.entries(L).filter(([k])=>k.startsWith(pre)).reduce((s,[,v])=>s+v.length,0),tot=Object.values(L).reduce((s,v)=>s+v.length,0);
+m.innerHTML=`<div class="stats"><div><b>${streak()}</b>يوم متتالٍ</div><div><b>${w}</b>هذا الأسبوع</div><div><b>${mo}</b>هذا الشهر</div></div><div class="card"><div class="bars">${wa.map(([l,c])=>`<div class="bar"><span>${c}</span><i style="height:${c/mx*80}px"></i><span>${l}</span></div>`).join('')}</div><div class="mt" style="margin-top:10px">الإجمالي: ${tot} قراءة</div></div><h3>قرأتَ اليوم</h3>${H.filter(h=>isRead(h.id)).map(card).join('')||'<p style="text-align:center;color:var(--mu)">لم تسجّل قراءة اليوم بعد</p>'}`}
 else m.innerHTML=U?`<div class="card"><h3>إضافة حديث</h3><textarea id="t" rows="5" placeholder="الحديث / الراوي / المصدر"></textarea><input id="g" placeholder="درجة الحديث (اختياري)"><input id="p" placeholder="الموضوع (اختياري)"><div class="row"><button class="btn" data-a="add">إضافة</button><button class="btn o" data-a="out">خروج</button></div></div>`:`<div class="card"><h3>دخول المشرف</h3><input id="em" type="email" placeholder="البريد"><input id="pw" type="password" placeholder="كلمة المرور"><button class="btn" data-a="in">دخول</button></div>`}
-$('#nv').onclick=e=>{const b=e.target.closest('[data-k]');if(b){tab=b.dataset.k;view()}};
-$('#m').oninput=e=>{if(e.target.id=='q'){q=e.target.value;res()}};
-$('#m').onclick=async e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,i=b.dataset.i,h=H.find(x=>x.id==i);
-if(a=='f'){fav=fav.includes(i)?fav.filter(x=>x!=i):[...fav,i];localStorage.fav=JSON.stringify(fav);view()}
-else if(a=='c'){navigator.clipboard.writeText(`${h.text}\n— ${h.narrator} (${h.source})`);b.textContent='تم ✓'}
-else if(a=='r'&&H.length){rnd=H[Math.floor(Math.random()*H.length)];view()}
-else if(a=='s'){src=b.dataset.s;view()}
-else if(a=='d'){if(confirm('حذف هذا الحديث لجميع المستخدمين؟'))deleteDoc(doc(db,'hadiths',i))}
-else if(a=='in')signInWithEmailAndPassword(au,$('#em').value,$('#pw').value).catch(()=>alert('بيانات الدخول غير صحيحة'));
-else if(a=='out')signOut(au);
-else if(a=='add'){const p=$('#t').value.split('/').map(x=>x.trim()),source=p.pop(),narrator=p.pop(),text=p.join(' / ');
-if(!text||!narrator||!source)return alert('اكتب: الحديث / الراوي / المصدر');
-try{await addDoc(collection(db,'hadiths'),{text,narrator,source,grade:$('#g').value.trim(),topic:$('#p').value.trim(),createdAt:serverTimestamp()});view();alert('تمت الإضافة ✓')}catch{alert('تعذّرت الإضافة')}}};
+document.addEventListener('input',e=>{if(e.target.id=='q'){q=e.target.value;res()}});
+document.addEventListener('click',async e=>{
+const n=e.target.closest('[data-nav]');if(n){tab=n.dataset.nav;view();return}
+if(e.target.id=='md'){close();return}
+const b=e.target.closest('[data-a]');if(!b)return;
+const a=b.dataset.a,i=b.dataset.i,h=H.find(x=>x.id==i);
+switch(a){
+case'f':fav=fav.includes(i)?fav.filter(x=>x!=i):[...fav,i];S('fav',fav);view();break;
+case'c':if(h){navigator.clipboard.writeText(`${h.text}\n— ${h.narrator} (${h.source})`);toast('تم النسخ ✓')}break;
+case'r':if(H.length){rnd=H[Math.floor(Math.random()*H.length)];view()}break;
+case's':src=b.dataset.s;view();break;
+case'fs':fsel=b.dataset.s;view();break;
+case'd':ask('حذف هذا الحديث لجميع المستخدمين؟',()=>deleteDoc(doc(db,'hadiths',i)));break;
+case'in':signInWithEmailAndPassword(au,$('#em').value,$('#pw').value).catch(()=>toast('بيانات الدخول غير صحيحة'));break;
+case'out':signOut(au);break;
+case'add':{const p=$('#t').value.split('/').map(x=>x.trim()),source=p.pop(),narrator=p.pop(),text=p.join(' / ');
+if(!text||!narrator||!source){toast('اكتب: الحديث / الراوي / المصدر');break}
+try{await addDoc(collection(db,'hadiths'),{text,narrator,source,grade:$('#g').value.trim(),topic:$('#p').value.trim(),createdAt:serverTimestamp()});view();toast('تمت الإضافة ✓')}catch{toast('تعذّرت الإضافة')}break}
+case'rd':R=i;rdr();break;
+case'rx':R=null;rdr();view();break;
+case'rn':{const k=(H.findIndex(x=>x.id==R)+ +b.dataset.d+H.length)%H.length;R=H[k].id;rdr();$('#rd').scrollTop=0;break}
+case'rk':markRead(R);rdr();break;
+case'rp':{const p=b.dataset.p,[lo,hi,st]=lim[p];rs[p]=Math.round(Math.min(hi,Math.max(lo,rs[p]+st*+b.dataset.d))*10)/10;S('rs',rs);rdr();break}
+case'ok':markRead(i);view();break;
+case'cl':colModal(i);break;
+case'tc':{const c=b.dataset.c;C[c]=C[c]||[];C[c]=C[c].includes(i)?C[c].filter(x=>x!=i):[...C[c],i];S('cols',C);colModal(i);view();break}
+case'nc':{const name=$('#cn').value.trim();if(!name)break;C[name]=C[name]||[];if(i&&!C[name].includes(i))C[name].push(i);S('cols',C);if(i)colModal(i);else close();view();break}
+case'nc0':modal(`<h3>مجموعة جديدة</h3><input id="cn" placeholder="مثل: أحاديث أريد حفظها"><div class="row"><button class="btn" data-a="nc" data-i="">إنشاء</button><button class="btn o" data-a="x">إلغاء</button></div>`);break;
+case'dc':ask('حذف المجموعة «'+E(fsel)+'»؟ (لن تُحذف الأحاديث نفسها)',()=>{delete C[fsel];S('cols',C);fsel='';view()});break;
+case'yes':{close();if(yes){const f=yes;yes=null;f()}break}
+case'x':close();break;
+case'im':if(h)cardImg(h);break;
+case'sh':{if(!CV)break;CV.toBlob(async blob=>{const f=new File([blob],'hadith.png',{type:'image/png'});
+if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]})}catch{}}
+else{const a2=document.createElement('a');a2.href=URL.createObjectURL(blob);a2.download='hadith.png';a2.click();toast('تم حفظ الصورة')}});break}
+}});
 $('#th').onclick=()=>{const d=document.documentElement.dataset.t=='d'?'':'d';document.documentElement.dataset.t=d;localStorage.theme=d};
 document.documentElement.dataset.t=localStorage.theme||'';
 onAuthStateChanged(au,u=>{U=u;view()});
-onSnapshot(query(collection(db,'hadiths'),orderBy('createdAt','desc')),s=>{H=s.docs.map(d=>({id:d.id,...d.data()}));if(tab!='adm')view()});
+onSnapshot(query(collection(db,'hadiths'),orderBy('createdAt','desc')),s=>{H=s.docs.map(d=>({id:d.id,...d.data()}));if(tab!='adm')view();if(R)rdr()});
 view();
 </script></body></html>
