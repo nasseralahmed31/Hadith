@@ -71,6 +71,15 @@ nav button.on{color:#fff}nav button.on b{transform:translateY(-1px) scale(1.2)}
 .bx .btn,.bx .chip{width:100%;margin:5px 0;text-align:start}
 .w{display:inline-block;border-bottom:2px dashed var(--gd);min-width:46px;text-align:center;color:transparent;cursor:pointer;user-select:none;transition:color .3s}.w.s{color:var(--tx);border-color:transparent}
 #ts{position:fixed;bottom:104px;left:50%;transform:translate(-50%,16px);background:var(--ac);color:#fff;padding:10px 20px;border-radius:22px;opacity:0;transition:.35s var(--sp);z-index:40;pointer-events:none}#ts.show{opacity:1;transform:translate(-50%,0)}
+.tx.cl{cursor:pointer}
+.xh{display:inline-flex;align-items:center;gap:6px;background:rgba(184,144,47,.12);border:1px solid var(--gd);color:var(--gd);border-radius:20px;padding:4px 13px;font-size:12px;font-weight:600;margin-bottom:10px}
+.xh i{font-style:normal;transition:transform .4s var(--sp)}.xh.open i{transform:rotate(180deg)}
+.vx{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1)}.vx.open{grid-template-rows:1fr}
+.vi{overflow:hidden;min-height:0}
+.vl{background:rgba(184,144,47,.08);border:1px solid var(--bd);border-radius:14px;padding:4px 14px;margin-bottom:12px}
+.ve{padding:9px 0;border-bottom:1px dashed var(--bd);font-size:14px;line-height:1.8}.ve:last-child{border:0}
+.ve b{color:var(--gd);display:block}.ve span{opacity:.92}
+.hero .vl{background:rgba(0,0,0,.2);border-color:rgba(216,180,94,.3)}.hero .ve span{color:var(--ht)}
 </style></head>
 <body><div class="top"><div><h1>📖 أحاديث</h1><small id="gr"></small></div><button class="ic" id="th">🌙</button></div>
 <main id="m"></main><nav id="nv"></nav><div id="md"></div><div id="ts"></div>
@@ -83,14 +92,19 @@ const db=initializeFirestore(app,{localCache:persistentLocalCache()}),au=getAuth
 const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const J=(k,d)=>{try{return JSON.parse(localStorage[k])||d}catch{return d}},S=(k,v)=>localStorage[k]=JSON.stringify(v);
 const nz=s=>String(s||'').replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه');
-let H=[],N={},U=null,tab='home',q='',grp='',val='',rnd=null,fsel='',yes=null,TS=null,PN=null;
+let H=[],N={},U=null,tab='home',q='',grp='',val='',rnd=null,fsel='',yes=null,TS=null,PN=null,XS=new Set(),PA=null;
+const nn=s=>nz(s).replace(/[^\u0621-\u064A0-9]/g,'');
+const wset=s=>new Set(nz(s).split(/[^\u0621-\u064A0-9]+/).filter(Boolean));
+function dupOf(t,ex){const a=nn(t);if(!a)return null;const A=wset(t);for(const h of H){if(h.id==ex)continue;const b=nn(h.text);if(a==b)return{h,exact:true};if(Math.min(a.length,b.length)>=25&&(a.includes(b)||b.includes(a)))return{h};const B=wset(h.text);let c=0;A.forEach(w=>{if(B.has(w))c++});if(c/(A.size+B.size-c)>=.8)return{h}}return null}
+function parseIn(v){const p=v.split('/').map(x=>x.trim());let vocab='';if(p.length>=4)vocab=p.pop();const source=p.pop(),narrator=p.pop(),text=p.join(' / ');return{text,narrator,source,vocab}}
+async function doAdd(o){try{await addDoc(collection(db,'hadiths'),{text:o.text,narrator:o.narrator,source:o.source,vocab:o.vocab||'',grade:o.grade||'',topic:o.topic||'',createdAt:serverTimestamp()});view();toast('تمت الإضافة ✓')}catch{toast('تعذّرت الإضافة')}}
 let fav=J('fav',[]),mem=J('mem',[]),L=J('log',{}),C=J('cols',{}),rs=J('rs',{s:21}),rm=J('rm',{on:false,n:3,from:'08:00',to:'20:00'});
 if(!(rs.s>=16&&rs.s<=34))rs.s=21;document.documentElement.style.setProperty('--fs',rs.s+'px');
 const T=[['home','🏠','الرئيسية'],['lib','📚','المكتبة'],['saved','❤️','المفضلة'],['mem','🧠','حفظتها'],['more','⚙️','المزيد']];
 const G={source:'المصدر',narrator:'الراوي',topic:'الموضوع',grade:'الدرجة'};
 const empty=m=>`<p style="text-align:center;color:var(--mu);padding:30px 10px">${m||'لا توجد أحاديث'}</p>`;
 const fmt=d=>d.toLocaleDateString('en-CA'),td=()=>fmt(new Date()),cn=d=>(L[fmt(d)]||[]).length,isRead=id=>(L[td()]||[]).includes(id);
-const day=()=>{let n=0;for(const c of td())n=(n*31+c.charCodeAt(0))%100003;return H[n%H.length]};
+const day=()=>{const dn=Math.floor((Date.now()-new Date().getTimezoneOffset()*6e4)/864e5),P=J('dot',{});let h=P.d===dn&&H.find(x=>x.id==P.id);if(!h){const s=[...H].reverse();h=s[dn%s.length];S('dot',{d:dn,id:h.id})}return h};
 function streak(){const d=new Date();let c=0;if(!cn(d))d.setDate(d.getDate()-1);while(cn(d)){c++;d.setDate(d.getDate()-1)}return c}
 function week(){let t=0,a=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const c=cn(d);a.push([d.toLocaleDateString('ar',{weekday:'short'}),c]);t+=c}return[t,a]}
 function markRead(id){if(isRead(id)){toast('مسجّل مسبقًا اليوم');return}(L[td()]=L[td()]||[]).push(id);S('log',L);toast('سُجّلت قراءة اليوم ✓')}
@@ -103,7 +117,10 @@ const gc=g=>/ضعيف|موضوع/.test(g)?'bad':/حسن/.test(g)?'mid':'ok';
 const no=h=>`<span class="no">${N[h.id]||''}</span>`;
 const meta=h=>`<div class="mt"><span>الراوي: ${E(h.narrator)}</span><span class="tag">${E(h.source)}</span>${h.grade?`<span class="tag ${gc(h.grade)}">${E(h.grade)}</span>`:''}${h.topic?`<span class="tag">${E(h.topic)}</span>`:''}</div>`;
 const acts=h=>{const r=isRead(h.id),m=mem.includes(h.id),f=fav.includes(h.id),i=h.id;return`<div class="acts"><div class="g1"><button class="pl ${r?'on':''}" data-a="ok" data-i="${i}">${r?'✓':'☑️'} قرأته</button><button class="pl ${m?'on':''}" data-a="mm" data-i="${i}">${m?'✓':'🧠'} حفظته</button></div><div class="g2"><button class="cb ${f?'on':''}" data-a="f" data-i="${i}">${f?'❤️':'🤍'}</button><button class="cb" data-a="c" data-i="${i}">📋</button><button class="cb" data-a="sh" data-i="${i}">⋯</button></div></div>`};
-const card=h=>`<div class="card">${no(h)}<p class="tx">${E(h.text)}</p>${meta(h)}${acts(h)}</div>`;
+const pv=s=>String(s||'').split(/\n|[؛;]/).map(x=>x.trim()).filter(Boolean).map(x=>{const k=x.search(/[:：=]/);return k>0?[x.slice(0,k).trim(),x.slice(k+1).trim()]:['',x]});
+const txt=h=>{const v=pv(h.vocab),o=XS.has(h.id)?' open':'';if(!v.length)return`<p class="tx">${E(h.text)}</p>`;
+return`<p class="tx cl" data-a="xp" data-i="${h.id}">${E(h.text)}</p><button class="xh${o}" data-a="xp" data-i="${h.id}" data-xid="${h.id}">📖 شرح المفردات (${v.length}) <i>▾</i></button><div class="vx${o}" data-xid="${h.id}"><div class="vi"><div class="vl">${v.map(([w,m])=>`<div class="ve">${w?`<b>${E(w)}</b>`:''}<span>${E(m)}</span></div>`).join('')}</div></div></div>`};
+const card=h=>`<div class="card">${no(h)}${txt(h)}${meta(h)}${acts(h)}</div>`;
 function sheet(id){modal(`<h3>المزيد</h3><button class="btn o" data-a="cl" data-i="${id}">➕ إضافة إلى مجموعة</button><button class="btn o" data-a="ts" data-i="${id}">🧠 اختبر حفظك</button>${U?`<button class="btn o" data-a="ed" data-i="${id}">✏️ تعديل</button><button class="btn o" data-a="d" data-i="${id}">🗑 حذف</button>`:''}`)}
 function colModal(id){modal(`<h3>إضافة إلى مجموعة</h3>${Object.keys(C).map(n=>{const on=(C[n]||[]).includes(id);return`<button class="chip ${on?'on':''}" data-a="tc" data-c="${E(n)}" data-i="${id}">${on?'✓ ':''}${E(n)}</button>`}).join('')}<input id="cn" placeholder="مجموعة جديدة..."><button class="btn" data-a="nc" data-i="${id}">إنشاء وإضافة</button><button class="btn o" data-a="x">تم</button>`)}
 function tsR(){const h=TS.h,w=h.text.split(/\s+/);$('#md').innerHTML=`<div class="bx"><h3>🧠 أكمل الكلمات المخفية (اضغط لإظهارها)</h3><p class="tx">${w.map((x,i)=>TS.hide[i]?`<span class="w ${TS.rev[i]?'s':''}" data-a="rv" data-k="${i}">${E(x)}</span>`:E(x)).join(' ')}</p><button class="btn" data-a="tr">🔄 إخفاء كلمات أخرى</button><button class="btn o" data-a="ta">👁 إظهار الكل</button><button class="btn o" data-a="x">إغلاق</button></div>`}
@@ -128,7 +145,7 @@ const hr=new Date().getHours();$('#gr').textContent=(hr<5||hr>=17?'مساء ال
 const ti=T.findIndex(x=>x[0]==tab);document.querySelectorAll('#nv button').forEach((b,j)=>b.classList.toggle('on',j==ti));$('.pill').style.right=`calc(6px + ${ti}*(100% - 12px)/5)`;
 const m=$('#m');m.className=an?'an':'';if(an){clearTimeout(view.t);view.t=setTimeout(()=>m.className='',900)}
 if(tab=='home'){const h=H.length?day():null;
-m.innerHTML=`<div class="st"><div><b>${streak()}</b>🔥 يوم متتالٍ</div><div><b>${cn(new Date())}</b>قرأتَ اليوم</div><div><b>${mem.length}</b>حفظتَ</div></div>${h?`<div class="hero">${no(h)}<div class="lb">✦ حديث اليوم ✦</div><p class="tx">${E(h.text)}</p>${meta(h)}${acts(h)}</div>`:empty()}<div class="row"><button class="btn g" data-a="r">🎲 حديث عشوائي</button></div>${rnd&&H.find(x=>x.id==rnd.id)?card(rnd):''}${H.length>1?`<h3>أُضيفت حديثًا</h3>${H.slice(0,3).map(card).join('')}`:''}`}
+m.innerHTML=`<div class="st"><div><b>${streak()}</b>🔥 يوم متتالٍ</div><div><b>${cn(new Date())}</b>قرأتَ اليوم</div><div><b>${mem.length}</b>حفظتَ</div></div>${h?`<div class="hero">${no(h)}<div class="lb">✦ حديث اليوم ✦</div>${txt(h)}${meta(h)}${acts(h)}</div>`:empty()}<div class="row"><button class="btn g" data-a="r">🎲 حديث عشوائي</button></div>${rnd&&H.find(x=>x.id==rnd.id)?card(rnd):''}${H.length>1?`<h3>أُضيفت حديثًا</h3>${H.slice(0,3).map(card).join('')}`:''}`}
 else if(tab=='lib'){m.innerHTML=`<input id="q" placeholder="🔍 ابحث (يتجاهل التشكيل)..." value="${E(q)}"><div class="chips"><button class="chip ${grp?'':'on'}" data-a="g" data-s="">الكل</button>${Object.entries(G).map(([k,l])=>`<button class="chip ${grp==k?'on':''}" data-a="g" data-s="${k}">${l}</button>`).join('')}${val?'<button class="chip" data-a="v" data-s="">↩ رجوع</button>':''}</div><div id="res"></div>`;res()}
 else if(tab=='saved'){if(fsel&&!C[fsel])fsel='';const ids=fsel?C[fsel]:fav,a=H.filter(h=>ids.includes(h.id));
 m.innerHTML=`<div class="chips"><button class="chip ${fsel?'':'on'}" data-a="fs" data-s="">❤️ المفضلة (${fav.length})</button>${Object.keys(C).map(n=>`<button class="chip ${fsel==n?'on':''}" data-a="fs" data-s="${E(n)}">${E(n)} (${C[n].length})</button>`).join('')}<button class="chip" data-a="nc0">＋ مجموعة</button></div>${fsel?`<div class="row"><button class="btn o" data-a="dc">حذف المجموعة</button></div>`:''}${list(a,'لا شيء هنا بعد')}`}
@@ -138,7 +155,7 @@ else{const[w,wa]=week(),mx=Math.max(1,...wa.map(x=>x[1])),pre=td().slice(0,7),mo
 m.innerHTML=`<h3>📊 إحصائيات القراءة</h3><div class="st"><div><b>${streak()}</b>يوم متتالٍ</div><div><b>${w}</b>هذا الأسبوع</div><div><b>${mo}</b>هذا الشهر</div></div><div class="card"><div class="bars">${wa.map(([l,c])=>`<div class="bar"><span>${c}</span><i style="height:${c/mx*80}px"></i><span>${l}</span></div>`).join('')}</div><div class="mt" style="margin-top:10px">إجمالي القراءات: ${tot} · المصادر: ${new Set(H.map(h=>h.source)).size} · الرواة: ${new Set(H.map(h=>h.narrator)).size}</div></div>
 <h3>⏰ التذكيرات</h3><div class="card">${window.__LN?`<label><input type="checkbox" id="ro" ${rm.on?'checked':''} style="width:auto"> تفعيل التذكيرات اليومية</label><p class="mt">عدد التذكيرات (1 إلى 10)</p><input id="rn" type="number" min="1" max="10" value="${rm.n}"><p class="mt">من الساعة</p><input id="rf" type="time" value="${rm.from}"><p class="mt">إلى الساعة</p><input id="rt" type="time" value="${rm.to}"><p class="mt">يختار التطبيق الحديث، والضغط على الإشعار يفتحه مباشرة.</p><button class="btn" data-a="rsv">حفظ وجدولة</button>`:'<p class="mt">التذكيرات تعمل في تطبيق الأندرويد (APK) فقط.</p>'}</div>
 <h3>🎨 المظهر</h3><div class="card"><div class="row"><button class="btn o" data-a="tt">🌗 تبديل الوضع</button><button class="btn o" data-a="fz" data-d="-1">أ −</button><button class="btn o" data-a="fz" data-d="1">أ +</button></div></div>
-<h3>🔐 المشرف</h3>${U?`<div class="card"><textarea id="t" rows="5" placeholder="الحديث / الراوي / المصدر"></textarea><input id="g2" placeholder="درجة الحديث (اختياري)"><input id="p" placeholder="الموضوع (اختياري)"><div class="row"><button class="btn" data-a="add">إضافة حديث</button><button class="btn o" data-a="out">خروج</button></div></div>`:`<div class="card"><input id="em" type="email" placeholder="البريد"><input id="pw" type="password" placeholder="كلمة المرور"><button class="btn" data-a="in">دخول</button></div>`}`}}
+<h3>🔐 المشرف</h3>${U?`<div class="card"><textarea id="t" rows="7" placeholder="الحديث / الراوي / المصدر / شرح المفردات (اختياري)"></textarea><p class="mt">شرح المفردات: كل كلمة في سطر بهذا الشكل «الكلمة: معناها» أو افصل بينها بـ ؛ ولا تستعمل / داخل نص الحديث نفسه.</p><input id="g2" placeholder="درجة الحديث (اختياري)"><input id="p" placeholder="الموضوع (اختياري)"><div class="row"><button class="btn" data-a="add">إضافة حديث</button><button class="btn o" data-a="out">خروج</button></div></div>`:`<div class="card"><input id="em" type="email" placeholder="البريد"><input id="pw" type="password" placeholder="كلمة المرور"><button class="btn" data-a="in">دخول</button></div>`}`}}
 document.addEventListener('input',e=>{if(e.target.id=='q'){q=e.target.value;res()}});
 document.addEventListener('click',async e=>{
 const n=e.target.closest('[data-nav]');if(n){if(tab!=n.dataset.nav){tab=n.dataset.nav;view(true);scrollTo({top:0,behavior:'smooth'})}return}
@@ -156,13 +173,16 @@ case'v':val=b.dataset.s;view(true);break;
 case'fs':fsel=b.dataset.s;view(true);break;
 case'sh':sheet(i);break;
 case'd':ask('حذف هذا الحديث لجميع المستخدمين؟',()=>deleteDoc(doc(db,'hadiths',i)));break;
-case'ed':if(h)modal(`<h3>تعديل الحديث</h3><textarea id="e1" rows="5">${E(h.text)}</textarea><input id="e2" value="${E(h.narrator)}" placeholder="الراوي"><input id="e3" value="${E(h.source)}" placeholder="المصدر"><input id="e4" value="${E(h.grade)}" placeholder="الدرجة"><input id="e5" value="${E(h.topic)}" placeholder="الموضوع"><button class="btn" data-a="es" data-i="${i}">حفظ</button><button class="btn o" data-a="x">إلغاء</button>`);break;
-case'es':try{await updateDoc(doc(db,'hadiths',i),{text:$('#e1').value.trim(),narrator:$('#e2').value.trim(),source:$('#e3').value.trim(),grade:$('#e4').value.trim(),topic:$('#e5').value.trim()});close();toast('تم الحفظ ✓')}catch{toast('تعذّر الحفظ')}break;
+case'ed':if(h)modal(`<h3>تعديل الحديث</h3><textarea id="e1" rows="5">${E(h.text)}</textarea><input id="e2" value="${E(h.narrator)}" placeholder="الراوي"><input id="e3" value="${E(h.source)}" placeholder="المصدر"><input id="e4" value="${E(h.grade)}" placeholder="الدرجة"><input id="e5" value="${E(h.topic)}" placeholder="الموضوع"><textarea id="e6" rows="4" placeholder="شرح المفردات (كلمة: معناها، في كل سطر)">${E(h.vocab)}</textarea><button class="btn" data-a="es" data-i="${i}">حفظ</button><button class="btn o" data-a="x">إلغاء</button>`);break;
+case'es':try{await updateDoc(doc(db,'hadiths',i),{text:$('#e1').value.trim(),narrator:$('#e2').value.trim(),source:$('#e3').value.trim(),grade:$('#e4').value.trim(),topic:$('#e5').value.trim(),vocab:$('#e6').value.trim()});close();toast('تم الحفظ ✓')}catch{toast('تعذّر الحفظ')}break;
 case'in':signInWithEmailAndPassword(au,$('#em').value,$('#pw').value).catch(()=>toast('بيانات الدخول غير صحيحة'));break;
 case'out':signOut(au);break;
-case'add':{const p=$('#t').value.split('/').map(x=>x.trim()),source=p.pop(),narrator=p.pop(),text=p.join(' / ');
-if(!text||!narrator||!source){toast('اكتب: الحديث / الراوي / المصدر');break}
-try{await addDoc(collection(db,'hadiths'),{text,narrator,source,grade:$('#g2').value.trim(),topic:$('#p').value.trim(),createdAt:serverTimestamp()});view();toast('تمت الإضافة ✓')}catch{toast('تعذّرت الإضافة')}break}
+case'add':{const o=parseIn($('#t').value);o.grade=$('#g2').value.trim();o.topic=$('#p').value.trim();
+if(!o.text||!o.narrator||!o.source){toast('اكتب: الحديث / الراوي / المصدر');break}
+const d=dupOf(o.text);if(d){PA=o;modal(`<h3>⚠️ ${d.exact?'هذا الحديث مكرر':'يوجد حديث مشابه جدًا'}</h3><p class="mt">الموجود في التطبيق برقم ${N[d.h.id]}:</p><p class="tx">${E(d.h.text)}</p><p class="mt">الراوي: ${E(d.h.narrator)} · ${E(d.h.source)}</p><button class="btn g" data-a="addf">إضافته على أي حال</button><button class="btn o" data-a="x">إلغاء</button>`);break}
+await doAdd(o);break}
+case'addf':{close();if(PA){const o=PA;PA=null;await doAdd(o)}break}
+case'xp':{const open=XS.has(i);open?XS.delete(i):XS.add(i);document.querySelectorAll(`[data-xid="${i}"]`).forEach(el=>el.classList.toggle('open',!open));break}
 case'fz':rs.s=Math.min(34,Math.max(16,rs.s+D));S('rs',rs);document.documentElement.style.setProperty('--fs',rs.s+'px');toast('حجم خط الأحاديث: '+rs.s);break;
 case'cl':colModal(i);break;
 case'tc':{const c=b.dataset.c;C[c]=C[c]||[];C[c]=C[c].includes(i)?C[c].filter(x=>x!=i):[...C[c],i];S('cols',C);colModal(i);view();break}
