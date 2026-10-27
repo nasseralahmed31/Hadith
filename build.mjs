@@ -30,14 +30,22 @@ const ranges = {
   arabic: 'U+0600-06FF,U+0750-077F,U+08A0-08FF,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC',
   latin: 'U+0000-00FF,U+0131,U+0152-0153,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+FEFF',
 };
+const fonts = [
+  ['cairo', 'Cairo', [400, 600, 700]],
+  ['amiri', 'Amiri', [400, 700]],
+  ['scheherazade-new', 'Scheherazade New', [400, 700]],
+  ['noto-naskh-arabic', 'Noto Naskh Arabic', [400, 700]],
+];
 let css = '';
-for (const w of [400, 600, 700]) {
-  for (const s of ['arabic', 'latin']) {
-    const f = `cairo-${s}-${w}-normal.woff2`;
-    const src = `node_modules/@fontsource/cairo/files/${f}`;
-    if (!fs.existsSync(src)) { console.log('missing font', f); continue; }
-    fs.copyFileSync(src, `www/fonts/${f}`);
-    css += `@font-face{font-family:Cairo;font-weight:${w};font-display:swap;src:url(fonts/${f}) format('woff2');unicode-range:${ranges[s]}}`;
+for (const [pkg, fam, ws] of fonts) {
+  for (const w of ws) {
+    for (const s of ['arabic', 'latin']) {
+      const f = `${pkg}-${s}-${w}-normal.woff2`;
+      const src = `node_modules/@fontsource/${pkg}/files/${f}`;
+      if (!fs.existsSync(src)) { console.log('missing font', f); continue; }
+      fs.copyFileSync(src, `www/fonts/${f}`);
+      css += `@font-face{font-family:"${fam}";font-weight:${w};font-display:swap;src:url(fonts/${f}) format('woff2');unicode-range:${ranges[s]}}`;
+    }
   }
 }
 

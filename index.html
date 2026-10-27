@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07130f">
 <title>أحاديث</title>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Scheherazade+New:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f4efe3;--card:#fffdf7;--tx:#1d2b26;--mu:#6f7a73;--ac:#0f4c3a;--gd:#b8902f;--bd:#e3d9bf;--hero:linear-gradient(145deg,#0f4c3a,#0a3327);--ht:#f3e7c4;--sh:0 6px 20px rgba(15,76,58,.12);--sp:cubic-bezier(.34,1.56,.64,1)}
 [data-t=d]{--bg:#07130f;--card:#0e211a;--tx:#efe9d6;--mu:#93a69b;--ac:#2a9d78;--gd:#d8b45e;--bd:#1f3a30;--hero:linear-gradient(145deg,#12503d,#0a2a20);--sh:0 6px 20px rgba(0,0,0,.4)}
@@ -28,7 +28,7 @@ main{padding:0 16px;max-width:660px;margin:auto}
 .hero .acts{border-color:rgba(216,180,94,.3)}.hero .pl,.hero .cb{background:rgba(255,255,255,.08);border-color:rgba(216,180,94,.4);color:var(--ht)}
 .hero .no{inset-inline-start:auto;inset-inline-end:16px;top:20px}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:18px;margin:12px 0;box-shadow:var(--sh);position:relative;transition:background-color .4s,border-color .4s}
-.card:before{content:"✦";position:absolute;top:12px;left:16px;color:var(--gd);opacity:.5;font-size:14px}
+.card:before{content:"";position:absolute;top:14px;left:16px;width:14px;height:14px;opacity:.55;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 6l6 14 15-6-6 15 15 6-15 6 6 15-15-6-6 14-6-14-15 6 6-15-15-6 15-6-6-15 15 6z' fill='%23b8902f'/%3E%3C/svg%3E") center/contain no-repeat}
 .no{position:absolute;top:12px;inset-inline-start:14px;background:var(--gd);color:#1a1405;font-weight:700;font-size:12px;border-radius:20px;padding:1px 11px;line-height:20px;min-width:30px;text-align:center}
 .card .tx{margin-top:30px}
 .tx{font-family:Amiri,Cairo,serif;font-size:var(--fs,21px);line-height:2.05;margin:6px 0 12px}
@@ -80,9 +80,28 @@ nav button.on{color:#fff}nav button.on b{transform:translateY(-1px) scale(1.2)}
 .ve{padding:9px 0;border-bottom:1px dashed var(--bd);font-size:14px;line-height:1.8}.ve:last-child{border:0}
 .ve b{color:var(--gd);display:block}.ve span{opacity:.92}
 .hero .vl{background:rgba(0,0,0,.2);border-color:rgba(216,180,94,.3)}.hero .ve span{color:var(--ht)}
+
+[data-th=b]{--bg:#eef1f8;--card:#fff;--tx:#17203a;--mu:#66708a;--ac:#1b3a7a;--bd:#d8def0;--hero:linear-gradient(145deg,#1b3a7a,#0f2150)}
+[data-th=b][data-t=d]{--bg:#070d1f;--card:#0e1a38;--tx:#e9ecf7;--mu:#96a0bd;--ac:#4a78e0;--gd:#d8b45e;--bd:#1d2c55;--hero:linear-gradient(145deg,#1f4296,#0b1633)}
+[data-th=p]{--bg:#f3eefa;--card:#fff;--tx:#241a38;--mu:#75698c;--ac:#4b2a85;--bd:#ddd2ee;--hero:linear-gradient(145deg,#4b2a85,#2d1658)}
+[data-th=p][data-t=d]{--bg:#0f0a1c;--card:#1a1230;--tx:#ede7f8;--mu:#a095bb;--ac:#8b5fe0;--gd:#d8b45e;--bd:#2e2150;--hero:linear-gradient(145deg,#56309a,#251246)}
+[data-th=w]{--bg:#f1e6d0;--card:#fbf4e4;--tx:#3a2a18;--mu:#85735a;--ac:#7a4a1e;--gd:#a87a2a;--bd:#dccaa6;--hero:linear-gradient(145deg,#7a4a1e,#4d2c10)}
+[data-th=w][data-t=d]{--bg:#1a130c;--card:#261c12;--tx:#f0e4cc;--mu:#a89880;--ac:#c98a3f;--gd:#e0b86a;--bd:#3d2d1c;--hero:linear-gradient(145deg,#5a3716,#2e1c0b)}
+.tx{font-family:var(--hf,Amiri),Cairo,serif}
+h3{display:flex;align-items:center;gap:10px}h3:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--gd),transparent);opacity:.6}
+.dv{text-align:center;color:var(--gd);letter-spacing:10px;margin:22px 0 2px;font-size:14px;opacity:.85}
+.hero{padding:30px 24px}
+.hero:after{content:"";position:absolute;inset:9px;border:1px solid rgba(216,180,94,.5);border-radius:19px;pointer-events:none}
+.cn{position:absolute;color:var(--gd);font-size:12px;line-height:1;font-style:normal}.c1{top:3px;right:5px}.c2{top:3px;left:5px}.c3{bottom:3px;right:5px}.c4{bottom:3px;left:5px}
+nav button[data-b]:after{content:attr(data-b);position:absolute;top:2px;inset-inline-end:22%;background:#d1493b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:0 5px;line-height:16px}
+#sp{position:fixed;inset:0;z-index:99;background:radial-gradient(circle at 50% 40%,#12503d,#07130f 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f3e7c4;transition:opacity .7s,visibility .7s}
+#sp.hd{opacity:0;visibility:hidden}
+#sp svg{width:120px;height:120px;animation:spin 2.2s cubic-bezier(.4,0,.2,1) both}
+#sp h1{margin:18px 0 4px;font-size:36px;color:#d8b45e;animation:up .9s .5s both}#sp p{margin:0;opacity:.85;font-family:Amiri,serif;font-size:18px;animation:up .9s .8s both}
+@keyframes spin{from{transform:rotate(-180deg) scale(.2);opacity:0}to{transform:none;opacity:1}}
 </style></head>
 <body><div class="top"><div><h1>📖 أحاديث</h1><small id="gr"></small></div><button class="ic" id="th">🌙</button></div>
-<main id="m"></main><nav id="nv"></nav><div id="md"></div><div id="ts"></div>
+<main id="m"></main><nav id="nv"></nav><div id="md"></div><div id="ts"></div><div id="sp"><svg viewBox="0 0 64 64"><path d="M32 6l6 14 15-6-6 15 15 6-15 6 6 15-15-6-6 14-6-14-15 6 6-15-15-6 15-6-6-15 15 6z" fill="#d8b45e" fill-opacity=".15" stroke="#d8b45e" stroke-width="1.5"/><circle cx="32" cy="32" r="7" fill="#d8b45e"/></svg><h1>أحاديث</h1><p>﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾</p></div>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import{initializeFirestore,persistentLocalCache,collection,onSnapshot,query,orderBy,addDoc,deleteDoc,updateDoc,doc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
@@ -92,14 +111,26 @@ const db=initializeFirestore(app,{localCache:persistentLocalCache()}),au=getAuth
 const $=s=>document.querySelector(s),E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const J=(k,d)=>{try{return JSON.parse(localStorage[k])||d}catch{return d}},S=(k,v)=>localStorage[k]=JSON.stringify(v);
 const nz=s=>String(s||'').replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه');
-let H=[],N={},U=null,tab='home',q='',grp='',val='',rnd=null,fsel='',yes=null,TS=null,PN=null,XS=new Set(),PA=null;
+let H=[],N={},U=null,tab='home',q='',grp='',val='',rnd=null,fsel='',yes=null,TS=null,PN=null,XS=new Set(),PA=null,jf=0,QZ=null;
 const nn=s=>nz(s).replace(/[^\u0621-\u064A0-9]/g,'');
 const wset=s=>new Set(nz(s).split(/[^\u0621-\u064A0-9]+/).filter(Boolean));
 function dupOf(t,ex){const a=nn(t);if(!a)return null;const A=wset(t);for(const h of H){if(h.id==ex)continue;const b=nn(h.text);if(a==b)return{h,exact:true};if(Math.min(a.length,b.length)>=25&&(a.includes(b)||b.includes(a)))return{h};const B=wset(h.text);let c=0;A.forEach(w=>{if(B.has(w))c++});if(c/(A.size+B.size-c)>=.8)return{h}}return null}
 function parseIn(v){const p=v.split('/').map(x=>x.trim());let vocab='';if(p.length>=4)vocab=p.pop();const source=p.pop(),narrator=p.pop(),text=p.join(' / ');return{text,narrator,source,vocab}}
 async function doAdd(o){try{await addDoc(collection(db,'hadiths'),{text:o.text,narrator:o.narrator,source:o.source,vocab:o.vocab||'',grade:o.grade||'',topic:o.topic||'',createdAt:serverTimestamp()});view();toast('تمت الإضافة ✓')}catch{toast('تعذّرت الإضافة')}}
-let fav=J('fav',[]),mem=J('mem',[]),L=J('log',{}),C=J('cols',{}),rs=J('rs',{s:21}),rm=J('rm',{on:false,n:3,from:'08:00',to:'20:00'});
-if(!(rs.s>=16&&rs.s<=34))rs.s=21;document.documentElement.style.setProperty('--fs',rs.s+'px');
+let fav=J('fav',[]),mem=J('mem',[]),L=J('log',{}),mr=J('mr',{}),qs=J('qs',[]),th=localStorage.th||'e',ff=localStorage.ff||'Amiri',sd=localStorage.sd!=='0',C=J('cols',{}),rs=J('rs',{s:21}),rm=J('rm',{on:false,n:3,from:'08:00',to:'20:00'});
+if(!(rs.s>=16&&rs.s<=34))rs.s=21;document.documentElement.style.setProperty('--fs',rs.s+'px');document.documentElement.dataset.th=th;document.documentElement.style.setProperty('--hf','"'+ff+'"');mem.forEach(id=>{if(!mr[id])mr[id]={st:0,due:Date.now()}});
+const IV=[1,3,7,30];
+const canon=s=>{const k=nz(s);return /بخاري/.test(k)?'صحيح البخاري':/مسلم/.test(k)?'صحيح مسلم':String(s).trim()};
+const srcs=h=>{if(h._s)return h._s;const k=nz(h.source);let p=/متفق/.test(k)?['صحيح البخاري','صحيح مسلم']:String(h.source||'').split(/\s*(?:،|,|؛|;|\+|\/|\s+و(?=\S))\s*/).map(x=>x.trim()).filter(Boolean).map(canon);return h._s=[...new Set(p.length?p:[String(h.source||'')])]};
+const dsp=t=>sd?t:String(t).replace(/[\u064B-\u0652\u0670]/g,'');
+const jac=(a,b)=>{let c=0;a.forEach(w=>{if(b.has(w))c++});return c/(a.size+b.size-c||1)};
+const ws=h=>h._w||(h._w=wset(h.text));
+const nr=(a,b)=>{a=nn(a);b=nn(b);return a&&b&&(a==b||a.includes(b)||b.includes(a))};
+const rel=h=>H.filter(x=>x.id!=h.id&&nr(x.narrator,h.narrator)&&srcs(x).join()!=srcs(h).join()&&jac(ws(h),ws(x))>=.45);
+const rl=h=>{const r=rel(h);return r.length?`<div class="mt" style="margin-top:8px">🔗 نفس الحديث عند: ${r.map(x=>`<button class="tag" style="background:none;cursor:pointer;font-family:inherit" data-a="go" data-i="${x.id}">${E(srcs(x).join(' + '))} · رقم ${N[x.id]}</button>`).join(' ')}</div>`:''};
+const due=()=>mem.map(id=>H.find(x=>x.id==id)).filter(h=>h&&(mr[h.id]?.due??0)<=Date.now());
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const wd=h=>h.text.trim().split(/\s+/);
 const T=[['home','🏠','الرئيسية'],['lib','📚','المكتبة'],['saved','❤️','المفضلة'],['mem','🧠','حفظتها'],['more','⚙️','المزيد']];
 const G={source:'المصدر',narrator:'الراوي',topic:'الموضوع',grade:'الدرجة'};
 const empty=m=>`<p style="text-align:center;color:var(--mu);padding:30px 10px">${m||'لا توجد أحاديث'}</p>`;
@@ -115,21 +146,23 @@ const modal=h=>{$('#md').innerHTML=`<div class="bx">${h}</div>`;$('#md').style.d
 const ask=(t,f)=>{yes=f;modal(`<p>${t}</p><button class="btn" data-a="yes">نعم</button><button class="btn o" data-a="x">إلغاء</button>`)};
 const gc=g=>/ضعيف|موضوع/.test(g)?'bad':/حسن/.test(g)?'mid':'ok';
 const no=h=>`<span class="no">${N[h.id]||''}</span>`;
-const meta=h=>`<div class="mt"><span>الراوي: ${E(h.narrator)}</span><span class="tag">${E(h.source)}</span>${h.grade?`<span class="tag ${gc(h.grade)}">${E(h.grade)}</span>`:''}${h.topic?`<span class="tag">${E(h.topic)}</span>`:''}</div>`;
-const acts=h=>{const r=isRead(h.id),m=mem.includes(h.id),f=fav.includes(h.id),i=h.id;return`<div class="acts"><div class="g1"><button class="pl ${r?'on':''}" data-a="ok" data-i="${i}">${r?'✓':'☑️'} قرأته</button><button class="pl ${m?'on':''}" data-a="mm" data-i="${i}">${m?'✓':'🧠'} حفظته</button></div><div class="g2"><button class="cb ${f?'on':''}" data-a="f" data-i="${i}">${f?'❤️':'🤍'}</button><button class="cb" data-a="c" data-i="${i}">📋</button><button class="cb" data-a="sh" data-i="${i}">⋯</button></div></div>`};
+const meta=h=>`<div class="mt"><span>الراوي: ${E(h.narrator)}</span>${srcs(h).map(x=>`<span class="tag">${E(x)}</span>`).join('')}${h.grade?`<span class="tag ${gc(h.grade)}">${E(h.grade)}</span>`:''}${h.topic?`<span class="tag">${E(h.topic)}</span>`:''}</div>`;
+const acts=h=>{const r=isRead(h.id),m=mem.includes(h.id),f=fav.includes(h.id),i=h.id;return`<div class="acts"><div class="g1"><button class="pl ${m?'on':''}" data-a="mm" data-i="${i}">${m?'✓':'🧠'} حفظته</button></div><div class="g2"><button class="cb ${f?'on':''}" data-a="f" data-i="${i}">${f?'❤️':'🤍'}</button><button class="cb" data-a="c" data-i="${i}">📋</button><button class="cb" data-a="sh" data-i="${i}">⋯</button></div></div>`};
 const pv=s=>String(s||'').split(/\n|[؛;]/).map(x=>x.trim()).filter(Boolean).map(x=>{const k=x.search(/[:：=]/);return k>0?[x.slice(0,k).trim(),x.slice(k+1).trim()]:['',x]});
-const txt=h=>{const v=pv(h.vocab),o=XS.has(h.id)?' open':'';if(!v.length)return`<p class="tx">${E(h.text)}</p>`;
-return`<p class="tx cl" data-a="xp" data-i="${h.id}">${E(h.text)}</p><button class="xh${o}" data-a="xp" data-i="${h.id}" data-xid="${h.id}">📖 شرح المفردات (${v.length}) <i>▾</i></button><div class="vx${o}" data-xid="${h.id}"><div class="vi"><div class="vl">${v.map(([w,m])=>`<div class="ve">${w?`<b>${E(w)}</b>`:''}<span>${E(m)}</span></div>`).join('')}</div></div></div>`};
-const card=h=>`<div class="card">${no(h)}${txt(h)}${meta(h)}${acts(h)}</div>`;
+const txt=h=>{const v=pv(h.vocab),o=XS.has(h.id)?' open':'';if(!v.length)return`<p class="tx">${E(dsp(h.text))}</p>`;
+return`<p class="tx cl" data-a="xp" data-i="${h.id}">${E(dsp(h.text))}</p><button class="xh${o}" data-a="xp" data-i="${h.id}" data-xid="${h.id}">📖 شرح المفردات (${v.length}) <i>▾</i></button><div class="vx${o}" data-xid="${h.id}"><div class="vi"><div class="vl">${v.map(([w,m])=>`<div class="ve">${w?`<b>${E(w)}</b>`:''}<span>${E(m)}</span></div>`).join('')}</div></div></div>`};
+const card=h=>`<div class="card">${no(h)}${txt(h)}${meta(h)}${rl(h)}${acts(h)}</div>`;
 function sheet(id){modal(`<h3>المزيد</h3><button class="btn o" data-a="cl" data-i="${id}">➕ إضافة إلى مجموعة</button><button class="btn o" data-a="ts" data-i="${id}">🧠 اختبر حفظك</button>${U?`<button class="btn o" data-a="ed" data-i="${id}">✏️ تعديل</button><button class="btn o" data-a="d" data-i="${id}">🗑 حذف</button>`:''}`)}
 function colModal(id){modal(`<h3>إضافة إلى مجموعة</h3>${Object.keys(C).map(n=>{const on=(C[n]||[]).includes(id);return`<button class="chip ${on?'on':''}" data-a="tc" data-c="${E(n)}" data-i="${id}">${on?'✓ ':''}${E(n)}</button>`}).join('')}<input id="cn" placeholder="مجموعة جديدة..."><button class="btn" data-a="nc" data-i="${id}">إنشاء وإضافة</button><button class="btn o" data-a="x">تم</button>`)}
 function tsR(){const h=TS.h,w=h.text.split(/\s+/);$('#md').innerHTML=`<div class="bx"><h3>🧠 أكمل الكلمات المخفية (اضغط لإظهارها)</h3><p class="tx">${w.map((x,i)=>TS.hide[i]?`<span class="w ${TS.rev[i]?'s':''}" data-a="rv" data-k="${i}">${E(x)}</span>`:E(x)).join(' ')}</p><button class="btn" data-a="tr">🔄 إخفاء كلمات أخرى</button><button class="btn o" data-a="ta">👁 إظهار الكل</button><button class="btn o" data-a="x">إغلاق</button></div>`}
 function startTs(h){TS={h,hide:Array.from({length:h.text.split(/\s+/).length},()=>Math.random()<.35),rev:{}};tsR();$('#md').style.display='flex'}
 const list=(a,m)=>a.map(card).join('')||empty(m);
-function res(){const k=nz(q.trim()),box=$('#res');let h='';
-if(!k&&grp&&!val){const m={};H.forEach(x=>{const v=x[grp];if(v)m[v]=(m[v]||0)+1});const es=Object.entries(m).sort((a,b)=>b[1]-a[1]);
+function res(){const raw=q.trim().replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)),k=nz(raw),box=$('#res'),vals=x=>grp=='source'?srcs(x):(x[grp]?[x[grp]]:[]);let h='';
+if(jf&&!raw){const a=[...H].reverse().filter(x=>N[x.id]>=jf);h=`<p class="mt">يبدأ من الحديث رقم ${jf} · ${a.length} حديث</p>`+list(a)}
+else if(/^\d+$/.test(raw)){const t=H.find(x=>N[x.id]==+raw);h=t?`<button class="fo" style="width:100%;text-align:start" data-a="jp" data-n="${raw}"><b>حديث رقم ${raw}</b><span>${E(dsp(t.text).slice(0,90))}…</span><br><span class="mt">اضغط للانتقال إليه وما بعده</span></button>`:empty('لا يوجد حديث بهذا الرقم')}
+else if(!k&&grp&&!val){const m={};H.forEach(x=>vals(x).forEach(v=>m[v]=(m[v]||0)+1));const es=Object.entries(m).sort((a,b)=>b[1]-a[1]);
 h=es.length?`<div class="fg">${es.map(([v,c])=>`<button class="fo" data-a="v" data-s="${E(v)}"><b>${c}</b><span>${E(v)}</span></button>`).join('')}</div>`:empty()}
-else{const a=H.filter(x=>(!grp||!val||x[grp]==val)&&(!k||nz([x.text,x.narrator,x.source,x.topic,x.grade].join(' ')).includes(k)));h=(val?`<p class="mt">${G[grp]}: <span class="tag">${E(val)}</span> · ${a.length} حديث</p>`:`<p class="mt">${a.length} نتيجة</p>`)+list(a)}
+else{const a=H.filter(x=>(!grp||!val||vals(x).includes(val))&&(!k||nz([x.text,x.narrator,srcs(x).join(' '),x.topic,x.grade].join(' ')).includes(k)));h=(val?`<p class="mt">${G[grp]}: <span class="tag">${E(val)}</span> · ${a.length} حديث</p>`:`<p class="mt">${a.length} نتيجة</p>`)+list(a)}
 box.innerHTML=h}
 function openH(id){const h=H.find(x=>x.id==id);if(h)modal(card(h));else PN=id}
 async function sched(){const Nn=window.__LN;if(!Nn)return;try{const p=await Nn.checkPermissions();if(p.display!=='granted')await Nn.requestPermissions();
@@ -140,21 +173,32 @@ const h=H[(dy*13+k*7+Math.floor(now/864e5))%H.length];ns.push({id:dy*10+k+1,titl
 if(ns.length)await Nn.schedule({notifications:ns})}catch(e){}}
 if(window.__LN)window.__LN.addListener('localNotificationActionPerformed',e=>{const id=e.notification?.extra?.hid;if(id)openH(id)});
 $('#nv').innerHTML=T.map(([k,i,l])=>`<button data-nav="${k}"><b>${i}</b><span>${l}</span></button>`).join('')+'<i class="pill"></i>';
+function startQz(){const el=H.filter(h=>wd(h).length>=8);if(el.length<2){toast('أضف أحاديث أطول (8 كلمات فأكثر) لبدء الاختبار');return}
+const pr=shuf(el.filter(h=>mem.includes(h.id))).concat(shuf(el.filter(h=>!mem.includes(h.id)))),items=pr.slice(0,5).map(h=>{const w=wd(h),c=Math.min(Math.floor(w.length*.6),w.length-4),right=w.slice(c,c+4).join(' ');
+const ds=shuf(H.filter(x=>x.id!=h.id&&wd(x).length>=4)).slice(0,3).map(x=>{const y=wd(x),s=Math.floor(Math.random()*(y.length-3));return y.slice(s,s+4).join(' ')});
+return{pre:w.slice(0,c).join(' '),right,opts:shuf([right,...ds])}});
+QZ={items,i:0,score:0,done:null};qzR();$('#md').style.display='flex'}
+function qzR(){const Q=QZ;if(Q.i>=Q.items.length){qs.push({d:new Date().toLocaleDateString('en-CA'),s:Q.score,n:Q.items.length});qs=qs.slice(-30);S('qs',qs);
+const best=Math.max(...qs.map(x=>x.s)),last=qs.slice(-5).reverse();
+$('#md').innerHTML=`<div class="bx"><h3>🎯 نتيجتك</h3><p class="tx" style="text-align:center">${Q.score} / ${Q.items.length}</p><p class="mt">أفضل نتيجة: ${best} · آخر الاختبارات:</p>${last.map(x=>`<div class="ve"><b>${x.d}</b><span>${x.s} من ${x.n}</span></div>`).join('')}<button class="btn" data-a="qz">اختبار جديد</button><button class="btn o" data-a="x">إغلاق</button></div>`;return}
+const it=Q.items[Q.i];$('#md').innerHTML=`<div class="bx"><h3>🎯 السؤال ${Q.i+1} من ${Q.items.length}</h3><p class="tx">${E(dsp(it.pre))} …</p><p class="mt">اختر تكملة الحديث:</p>${it.opts.map((o,k)=>`<button class="btn o" data-a="qa" data-k="${k}">${E(dsp(o))}</button>`).join('')}</div>`}
+function qAns(k){const Q=QZ,it=Q.items[Q.i];if(Q.done!==null)return;Q.done=k;const ok=it.opts[k]==it.right;if(ok)Q.score++;
+document.querySelectorAll('#md [data-a=qa]').forEach((b,j)=>{if(it.opts[j]==it.right){b.style.background='#2a9d78';b.style.color='#fff'}else if(j==k){b.style.background='#d1493b';b.style.color='#fff'}});
+$('#md .bx').insertAdjacentHTML('beforeend',`<p class="mt">${ok?'✅ إجابة صحيحة':'❌ التكملة الصحيحة باللون الأخضر'}</p><button class="btn" data-a="qn">${Q.i+1<Q.items.length?'التالي':'عرض النتيجة'}</button>`)}
+function qNext(){QZ.i++;QZ.done=null;qzR()}
 function view(an){
 const hr=new Date().getHours();$('#gr').textContent=(hr<5||hr>=17?'مساء الخير':'صباح الخير')+' · '+H.length+' حديث';
-const ti=T.findIndex(x=>x[0]==tab);document.querySelectorAll('#nv button').forEach((b,j)=>b.classList.toggle('on',j==ti));$('.pill').style.right=`calc(6px + ${ti}*(100% - 12px)/5)`;
+const ti=T.findIndex(x=>x[0]==tab);document.querySelectorAll('#nv button').forEach((b,j)=>b.classList.toggle('on',j==ti));const dc2=due().length,mb=$('#nv [data-nav=mem]');dc2?mb.setAttribute('data-b',dc2):mb.removeAttribute('data-b');$('.pill').style.right=`calc(6px + ${ti}*(100% - 12px)/5)`;
 const m=$('#m');m.className=an?'an':'';if(an){clearTimeout(view.t);view.t=setTimeout(()=>m.className='',900)}
 if(tab=='home'){const h=H.length?day():null;
-m.innerHTML=`<div class="st"><div><b>${streak()}</b>🔥 يوم متتالٍ</div><div><b>${cn(new Date())}</b>قرأتَ اليوم</div><div><b>${mem.length}</b>حفظتَ</div></div>${h?`<div class="hero">${no(h)}<div class="lb">✦ حديث اليوم ✦</div>${txt(h)}${meta(h)}${acts(h)}</div>`:empty()}<div class="row"><button class="btn g" data-a="r">🎲 حديث عشوائي</button></div>${rnd&&H.find(x=>x.id==rnd.id)?card(rnd):''}${H.length>1?`<h3>أُضيفت حديثًا</h3>${H.slice(0,3).map(card).join('')}`:''}`}
-else if(tab=='lib'){m.innerHTML=`<input id="q" placeholder="🔍 ابحث (يتجاهل التشكيل)..." value="${E(q)}"><div class="chips"><button class="chip ${grp?'':'on'}" data-a="g" data-s="">الكل</button>${Object.entries(G).map(([k,l])=>`<button class="chip ${grp==k?'on':''}" data-a="g" data-s="${k}">${l}</button>`).join('')}${val?'<button class="chip" data-a="v" data-s="">↩ رجوع</button>':''}</div><div id="res"></div>`;res()}
+m.innerHTML=`<div class="st"><div><b>${H.length}</b>حديث</div><div><b>${new Set(H.flatMap(x=>srcs(x))).size}</b>مصدر</div><div><b>${mem.length}</b>حفظتَ</div></div>${due().length?`<div class="card" style="border-color:var(--gd)">📅 لديك <b>${due().length}</b> للمراجعة<div class="row"><button class="btn g" data-a="gm">ابدأ المراجعة</button></div></div>`:''}${h?`<div class="hero">${no(h)}<i class="cn c1">۞</i><i class="cn c2">۞</i><i class="cn c3">۞</i><i class="cn c4">۞</i><div class="lb">۞ حديث اليوم ۞</div>${txt(h)}${meta(h)}${rl(h)}${acts(h)}</div>`:empty()}<div class="row"><button class="btn g" data-a="r">🎲 حديث عشوائي</button><button class="btn o" data-a="qz">🎯 اختبار اليوم</button></div>${rnd&&H.find(x=>x.id==rnd.id)?card(rnd):''}${H.length>1?`<div class="dv">۞ ۞ ۞</div><h3>أُضيفت حديثًا</h3>${H.slice(0,3).map(card).join('')}`:''}`}
+else if(tab=='lib'){m.innerHTML=`<input id="q" placeholder="🔍 ابحث بالنص أو برقم الحديث..." value="${E(q)}"><div class="chips"><button class="chip ${grp?'':'on'}" data-a="g" data-s="">الكل</button>${Object.entries(G).map(([k,l])=>`<button class="chip ${grp==k?'on':''}" data-a="g" data-s="${k}">${l}</button>`).join('')}${val?'<button class="chip" data-a="v" data-s="">↩ رجوع</button>':''}${jf?'<button class="chip" data-a="jx">↩ إنهاء العرض</button>':''}</div><div id="res"></div>`;res()}
 else if(tab=='saved'){if(fsel&&!C[fsel])fsel='';const ids=fsel?C[fsel]:fav,a=H.filter(h=>ids.includes(h.id));
 m.innerHTML=`<div class="chips"><button class="chip ${fsel?'':'on'}" data-a="fs" data-s="">❤️ المفضلة (${fav.length})</button>${Object.keys(C).map(n=>`<button class="chip ${fsel==n?'on':''}" data-a="fs" data-s="${E(n)}">${E(n)} (${C[n].length})</button>`).join('')}<button class="chip" data-a="nc0">＋ مجموعة</button></div>${fsel?`<div class="row"><button class="btn o" data-a="dc">حذف المجموعة</button></div>`:''}${list(a,'لا شيء هنا بعد')}`}
 else if(tab=='mem'){const a=H.filter(h=>mem.includes(h.id)),p=H.length?Math.round(a.length/H.length*100):0;
-m.innerHTML=`<div class="hero" style="padding:18px"><div class="lb">🧠 حفظتَ ${a.length} من ${H.length} حديث (${p}%)</div><div class="pg"><i style="width:${p}%"></i></div></div>${list(a,'لم تحفظ أحاديث بعد. اضغط «حفظته» على أي حديث حفظتَه.')}`}
-else{const[w,wa]=week(),mx=Math.max(1,...wa.map(x=>x[1])),pre=td().slice(0,7),mo=Object.entries(L).filter(([k])=>k.startsWith(pre)).reduce((s,[,v])=>s+v.length,0),tot=Object.values(L).reduce((s,v)=>s+v.length,0);
-m.innerHTML=`<h3>📊 إحصائيات القراءة</h3><div class="st"><div><b>${streak()}</b>يوم متتالٍ</div><div><b>${w}</b>هذا الأسبوع</div><div><b>${mo}</b>هذا الشهر</div></div><div class="card"><div class="bars">${wa.map(([l,c])=>`<div class="bar"><span>${c}</span><i style="height:${c/mx*80}px"></i><span>${l}</span></div>`).join('')}</div><div class="mt" style="margin-top:10px">إجمالي القراءات: ${tot} · المصادر: ${new Set(H.map(h=>h.source)).size} · الرواة: ${new Set(H.map(h=>h.narrator)).size}</div></div>
-<h3>⏰ التذكيرات</h3><div class="card">${window.__LN?`<label><input type="checkbox" id="ro" ${rm.on?'checked':''} style="width:auto"> تفعيل التذكيرات اليومية</label><p class="mt">عدد التذكيرات (1 إلى 10)</p><input id="rn" type="number" min="1" max="10" value="${rm.n}"><p class="mt">من الساعة</p><input id="rf" type="time" value="${rm.from}"><p class="mt">إلى الساعة</p><input id="rt" type="time" value="${rm.to}"><p class="mt">يختار التطبيق الحديث، والضغط على الإشعار يفتحه مباشرة.</p><button class="btn" data-a="rsv">حفظ وجدولة</button>`:'<p class="mt">التذكيرات تعمل في تطبيق الأندرويد (APK) فقط.</p>'}</div>
-<h3>🎨 المظهر</h3><div class="card"><div class="row"><button class="btn o" data-a="tt">🌗 تبديل الوضع</button><button class="btn o" data-a="fz" data-d="-1">أ −</button><button class="btn o" data-a="fz" data-d="1">أ +</button></div></div>
+m.innerHTML=`<div class="hero" style="padding:18px"><div class="lb">🧠 حفظتَ ${a.length} من ${H.length} حديث (${p}%)</div><div class="pg"><i style="width:${p}%"></i></div></div><div class="row"><button class="btn g" data-a="qz">🎯 اختبار اليوم</button></div>${due().length?`<h3>📅 للمراجعة اليوم (${due().length})</h3>${due().map(h=>card(h)+`<div class="row" style="margin-top:-4px"><button class="btn" data-a="rok" data-i="${h.id}">تذكرتها ✓</button><button class="btn o" data-a="rno" data-i="${h.id}">نسيتها</button></div>`).join('')}`:''}<h3>كل المحفوظات (${a.length})</h3>${list(a,'لم تحفظ أحاديث بعد. اضغط «حفظته» على أي حديث حفظتَه.')}`}
+else{m.innerHTML=`<h3>⏰ التذكيرات</h3><div class="card">${window.__LN?`<label><input type="checkbox" id="ro" ${rm.on?'checked':''} style="width:auto"> تفعيل التذكيرات اليومية</label><p class="mt">عدد التذكيرات (1 إلى 10)</p><input id="rn" type="number" min="1" max="10" value="${rm.n}"><p class="mt">من الساعة</p><input id="rf" type="time" value="${rm.from}"><p class="mt">إلى الساعة</p><input id="rt" type="time" value="${rm.to}"><p class="mt">يختار التطبيق الحديث، والضغط على الإشعار يفتحه مباشرة.</p><button class="btn" data-a="rsv">حفظ وجدولة</button>`:'<p class="mt">التذكيرات تعمل في تطبيق الأندرويد (APK) فقط.</p>'}</div>
+<h3>🎨 المظهر</h3><div class="card"><p class="mt">الثيم</p><div class="chips">${[['e','زمردي','#0f4c3a'],['b','أزرق ملكي','#1b3a7a'],['p','بنفسجي','#4b2a85'],['w','ورقي دافئ','#7a4a1e']].map(([k,n,c])=>`<button class="chip ${th==k?'on':''}" data-a="th" data-s="${k}"><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${c};margin-inline-end:6px"></span>${n}</button>`).join('')}</div><p class="mt">خط الأحاديث</p><div class="chips">${[['Amiri','أميري'],['Scheherazade New','شهرزاد'],['Noto Naskh Arabic','نسخ'],['Cairo','القاهرة']].map(([f,n])=>`<button class="chip ${ff==f?'on':''}" style="font-family:'${f}'" data-a="ff" data-s="${f}">${n}</button>`).join('')}</div><div class="row"><button class="btn o" data-a="sd">${sd?'🔤 إخفاء التشكيل':'🔤 إظهار التشكيل'}</button><button class="btn o" data-a="tt">🌗 ليلي/نهاري</button><button class="btn o" data-a="fz" data-d="-1">أ −</button><button class="btn o" data-a="fz" data-d="1">أ +</button></div></div>
 <h3>🔐 المشرف</h3>${U?`<div class="card"><textarea id="t" rows="7" placeholder="الحديث / الراوي / المصدر / شرح المفردات (اختياري)"></textarea><p class="mt">شرح المفردات: كل كلمة في سطر بهذا الشكل «الكلمة: معناها» أو افصل بينها بـ ؛ ولا تستعمل / داخل نص الحديث نفسه.</p><input id="g2" placeholder="درجة الحديث (اختياري)"><input id="p" placeholder="الموضوع (اختياري)"><div class="row"><button class="btn" data-a="add">إضافة حديث</button><button class="btn o" data-a="out">خروج</button></div></div>`:`<div class="card"><input id="em" type="email" placeholder="البريد"><input id="pw" type="password" placeholder="كلمة المرور"><button class="btn" data-a="in">دخول</button></div>`}`}}
 document.addEventListener('input',e=>{if(e.target.id=='q'){q=e.target.value;res()}});
 document.addEventListener('click',async e=>{
@@ -164,8 +208,7 @@ const b=e.target.closest('[data-a]');if(!b)return;
 const a=b.dataset.a,i=b.dataset.i,h=H.find(x=>x.id==i),D=+b.dataset.d;
 switch(a){
 case'f':fav=fav.includes(i)?fav.filter(x=>x!=i):[...fav,i];S('fav',fav);view();pop('f',i);break;
-case'mm':mem=mem.includes(i)?mem.filter(x=>x!=i):[...mem,i];S('mem',mem);view();pop('mm',i);toast(mem.includes(i)?'أُضيف إلى حفظتها 🧠':'أُزيل من حفظتها');break;
-case'ok':markRead(i);view();pop('ok',i);break;
+case'mm':{const on=mem.includes(i);mem=on?mem.filter(x=>x!=i):[...mem,i];if(on)delete mr[i];else mr[i]={st:0,due:Date.now()+IV[0]*864e5};S('mem',mem);S('mr',mr);view();pop('mm',i);toast(on?'أُزيل من حفظتها':'أُضيف إلى حفظتها 🧠 · أول مراجعة غدًا');break}
 case'c':if(h){cp(`${h.text}\n\nالراوي: ${h.narrator}\nالمصدر: ${h.source}`);b.textContent='✓';b.classList.add('pop','on');setTimeout(()=>{b.textContent='📋';b.classList.remove('pop','on')},1300);toast('تم نسخ الحديث مع الراوي والمصدر')}break;
 case'r':if(H.length){rnd=H[Math.floor(Math.random()*H.length)];view(true)}break;
 case'g':grp=b.dataset.s;val='';view(true);break;
@@ -196,6 +239,18 @@ case'ta':TS.rev=Object.fromEntries(TS.hide.map((_,k)=>[k,true]));tsR();break;
 case'yes':{close();if(yes){const f=yes;yes=null;f()}break}
 case'x':close();break;
 case'rsv':rm={on:$('#ro').checked,n:Math.min(10,Math.max(1,+$('#rn').value||1)),from:$('#rf').value||'08:00',to:$('#rt').value||'20:00'};S('rm',rm);await sched();toast(rm.on?'تمت جدولة التذكيرات ✓':'أُوقفت التذكيرات');break;
+case'jp':jf=+b.dataset.n;q='';view(true);scrollTo({top:0,behavior:'smooth'});break;
+case'jx':jf=0;view(true);break;
+case'go':close();tab='lib';grp='';val='';q='';jf=N[i]||0;view(true);scrollTo(0,0);break;
+case'gm':tab='mem';view(true);break;
+case'rok':{const x=mr[i]||{st:0};x.st=Math.min(x.st+1,3);x.due=Date.now()+IV[x.st]*864e5;mr[i]=x;S('mr',mr);view();toast('أحسنت! المراجعة القادمة بعد '+IV[x.st]+' يومًا');break}
+case'rno':{mr[i]={st:0,due:Date.now()+IV[0]*864e5};S('mr',mr);view();toast('سنعيدها غدًا');break}
+case'qz':startQz();break;
+case'qa':qAns(+b.dataset.k);break;
+case'qn':qNext();break;
+case'th':th=b.dataset.s;localStorage.th=th;document.documentElement.dataset.th=th;view();break;
+case'ff':ff=b.dataset.s;localStorage.ff=ff;document.documentElement.style.setProperty('--hf','"'+ff+'"');view();break;
+case'sd':sd=!sd;localStorage.sd=sd?'1':'0';view();break;
 case'tt':$('#th').click();break;
 }});
 $('#th').onclick=()=>{const d=document.documentElement.dataset.t=='d'?'':'d';document.documentElement.dataset.t=d;localStorage.theme=d};
@@ -204,5 +259,6 @@ onAuthStateChanged(au,u=>{U=u;view()});
 onSnapshot(query(collection(db,'hadiths'),orderBy('createdAt','desc')),s=>{H=s.docs.map(d=>({id:d.id,...d.data()}));N={};H.forEach((h,i)=>N[h.id]=H.length-i);
 if(!document.activeElement||!/INPUT|TEXTAREA/.test(document.activeElement.tagName))view();
 if(PN){const id=PN;PN=null;openH(id)}sched()});
+setTimeout(()=>$('#sp').classList.add('hd'),1900);
 view(true);
 </script></body></html>
